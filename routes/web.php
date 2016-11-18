@@ -1,16 +1,21 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| This file is where you may define all of the routes that are handled
-| by your application. Just tell Laravel the URIs it should respond
-| to using a Closure or controller method. Build something great!
-|
-*/
+Route::get('/', function() {
+  $openBidding = Goutte::request('GET', 'http://licitacoes.ssp.df.gov.br./index.php/licitacoes');
 
-Route::get('/', function () {
-    return view('welcome');
+  $linkBidding = $openBidding
+    ->selectLink('Licitações')
+    ->getUri();
+
+  // $openTypes = Goutte::request('GET', $uriBidding);
+  // $linkTypes = $openTypes
+  //   ->filter('div->a')
+  //   -link();
+  // $uriTypes = $linkTypes-getUri();
+
+
+  // $crawler = $crawler->click($link1 );
+  // $link2 = $crawler->filter('.result__title > a')->attr('alt');
+  dump($linkBidding);
+  return view('welcome');
 });
