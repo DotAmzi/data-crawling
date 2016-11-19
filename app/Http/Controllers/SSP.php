@@ -14,8 +14,8 @@ class SSP extends BaseController
 
     $categories = $this->getCategories($firstPage);
 
-    dump($categories);
-
+    $biddings = $this->getBiddings($categories);
+dump($biddings);
    return view('welcome');
   }
 
@@ -30,6 +30,24 @@ class SSP extends BaseController
     return $crawl->getUri();
   }
 
+  private function getBiddings ($urls) {
+
+    foreach($urls as $url) {
+      echo "$url <br>";
+      $crawl = Goutte::request('GET', $url);
+      $biddings[] = $crawl
+            ->filter('#dm_docs > .dm_row')
+            ->each(function($element){
+              $bidding['title'] = $element->filter('h3 > a') -> text();
+              $bidding['File'] = $element->filter('div > ul > li > a') -> link() -> getUri();
+              return $bidding;
+            });
+
+    }
+
+    return $biddings;
+
+  }
 
   private function getCategories($url) {
     $crawl = Goutte::request('GET', $url);
