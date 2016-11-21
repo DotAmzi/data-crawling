@@ -19,7 +19,6 @@ class SSP extends BaseController
       if(count($value) === 0)
         unset($biddings['values'][$key]);
     }
-    dump($biddings);
    return view('SSP')->with($biddings);
   }
 
