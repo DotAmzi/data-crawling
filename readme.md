@@ -4,7 +4,7 @@
 Para usar este sistema basta seguir os passos abaixo:
 
 1.Execute o comando no seu terminal git de preferência
-https://github.com/camilofernandesalves/nr-challenge.git
+git clone https://github.com/camilofernandesalves/nr-challenge.git
 
 2.Instale as dependências do composer em seu terminal de preferência
 composer install
