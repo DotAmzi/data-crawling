@@ -5,9 +5,6 @@ namespace realBusiness\Http\Controllers;
 use Illuminate\Routing\Controller as BaseController;
 use Goutte;
 
-$category = "";
-
-
 class SSP extends BaseController
 {
   public function getValues () {
@@ -16,14 +13,14 @@ class SSP extends BaseController
 
     $categories = $this->getCategories($firstPage);
 
-    $biddings = $this->getBiddings($categories);
+    $biddings['values'] = $this->getBiddings($categories);
 
-    foreach ($biddings as $key=>$value) {
+    foreach ($biddings['values'] as $key=>$value) {
       if(count($value) === 0)
-        unset($biddings[$key]);
+        unset($biddings['values'][$key]);
     }
     dump($biddings);
-   return view('welcome');
+   return view('SSP')->with($biddings);
   }
 
   private function getMainPage() {
