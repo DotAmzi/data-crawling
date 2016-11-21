@@ -9,14 +9,11 @@ Para usar este sistema basta seguir os passos abaixo:
 2.Instale as dependências do composer em seu terminal de preferência
 > composer install
 
-3.Rode no seu terminal o seguinte comando
+3.Duplique o arquivo .env.example com o nome de .env e rode no seu terminal o seguinte comando
 > php artisan key:generate
 
-4.Copie a key gerada e cole no seu arquivo .env como no exemplo abaixo
-> APP_KEY=base64:yfIHzZA0r+ilUu0aSXdD+Nc5dw2XQWZhVn84QwkUX6E=
-
-5.Logo em seguinte levante o servidor do laravel, executando o comando abaixo no terminal de preferência
+4.Logo em seguinte levante o servidor do laravel, executando o comando abaixo no terminal de preferência
 > php artisan serve
 
-6.A aplicação roda em modo visual, portanto basta acessar na url abaixo
+5.A aplicação roda em modo visual, portanto basta acessar na url abaixo
 > http://localhost:8000/
