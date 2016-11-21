@@ -15,7 +15,6 @@ class SSP extends BaseController
     $categories = $this->getCategories($firstPage);
 
     $biddings = $this->getBiddings($categories);
-dump($biddings);
    return view('welcome');
   }
 
@@ -32,21 +31,46 @@ dump($biddings);
 
   private function getBiddings ($urls) {
 
-    foreach($urls as $url) {
-      echo "$url <br>";
-      $crawl = Goutte::request('GET', $url);
-      $biddings[] = $crawl
-            ->filter('#dm_docs > .dm_row')
-            ->each(function($element){
-              $bidding['title'] = $element->filter('h3 > a') -> text();
-              $bidding['File'] = $element->filter('div > ul > li > a') -> link() -> getUri();
-              return $bidding;
-            });
-
+    foreach($urls as $key=>$url) {
+      $values = $this->getRegistersBiddings($url);
+      $biddings[$key] = $values['registers'];
+      $pagination = $values['pagination'];
+      foreach ($pagination as $pag) {
+        if($pag !== null && count($pag) != 0) {
+          $values = $this->getRegistersBiddings($pag[0]);
+          dump($values['registers']);
+          $biddings[$key] = array_merge($biddings[$key], $values['registers']);
+        }
+      }
     }
+    dump($biddings);
 
     return $biddings;
+  }
 
+  private function getRegistersBiddings ($url) {
+    $crawl = Goutte::request('GET', $url);
+    $values['registers'] = $crawl
+                            ->filter('#dm_docs > .dm_row')
+                              ->each(function($element){
+                                $bidding['title'] = $element->filter('h3 > a') -> text();
+                                $bidding['title'] = preg_replace("/\t|\n/",'',$bidding['title']);
+                                $bidding['File'] = $element->filter('div > ul > li > a') -> link() -> getUri();
+                                return $bidding;
+                              });
+    $values['pagination'] = $crawl
+                              ->filter('#dm_nav > ul > li')
+                                ->each(function($element){
+                                  if(!$element->attr('class')) {
+                                    return $element->filter('a')
+                                        ->each(function($element){
+
+                                            return $element->link()->getUri();
+                                        });
+
+                                  }
+                                });
+    return $values;
   }
 
   private function getCategories($url) {
